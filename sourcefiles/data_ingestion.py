@@ -59,3 +59,39 @@ def preprocess_data(data: pd.DataFrame) -> pd.DataFrame:
         logger.error(f"Error in data preprocessing: {e}")
         raise
 
+### Function to split data into train and test sets
+def save_data(train_data: pd.DataFrame, test_data: pd.DataFrame, data_path: str) -> None:
+    """Save the train and test data to specified paths."""
+    try:
+        raw_data_path = os.path.join(data_path, 'raw')
+        os.makedirs(raw_data_path, exist_ok=True)
+        train_data.to_csv(os.path.join(raw_data_path, "train.csv"), index=False)
+        test_data.to_csv(os.path.join(raw_data_path, "test.csv"), index=False)      
+        logger.info(f"Train and test data saved to {raw_data_path}")
+    except Exception as e:
+        logger.error(f"Error saving data: {e}")
+        raise
+
+### Main function to execute the data ingestion pipeline
+def main():
+    try:
+        test_size = 0.2
+        random_state = 2                # Random state 2 means every time you run the code, you will get the same split of data into train and test sets
+        data_path = "https://raw.githubusercontent.com/rkydx/datasets_repo/refs/heads/main/spam.csv"
+
+        # Load data
+        data = load_data(data_path)
+        # Preprocess data
+        final_data = preprocess_data(data)
+        # Split data into train and test sets
+        train_data, test_data = train_test_split(final_data, test_size=test_size, random_state=random_state)
+        # Save the train and test data
+        save_data(train_data, test_data, data_path="./data")
+    except Exception as e:
+        logger.critical(f"Critical error in data ingestion pipeline: {e}")
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()
+
+
