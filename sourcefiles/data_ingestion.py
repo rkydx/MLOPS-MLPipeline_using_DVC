@@ -41,22 +41,22 @@ def load_data(data_url: str) -> pd.DataFrame:
         raise
 
 ### Function to preprocess data, specific to the dataset being used
-def preprocess_data(data: pd.DataFrame) -> pd.DataFrame:
-    """Preprocess the data (example: handle missing values, drop columns, rename columns, remove duplicates etc.)."""
+def cleaning_data(data: pd.DataFrame) -> pd.DataFrame:
+    """Cleaning the data (example: handle missing values, drop columns, rename columns, remove duplicates etc.)."""
     try:
-        logger.info("Starting data preprocessing")
+        logger.info("Starting data cleaning process")
         data.drop(columns = ['Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4'], inplace = True) # Drop unnecessary columns
         data.rename(columns = {'v1': 'target', 'v2': 'text'}, inplace = True)           # Rename columns for better understanding
         # data = data.dropna()                                                          # Drop rows with missing values
         # logger.info(f"Data after dropping missing values has shape {data.shape}")
         data.drop_duplicates(keep='first', inplace = True)                                # Drop duplicate rows
-        logger.info("Data preprocessing completed")
+        logger.info("Data cleaning process completed")
         return data
     except KeyError as e:
-        logger.error(f"Key error during data preprocessing: {e}")
+        logger.error(f"Key error during data cleaning: {e}")
         raise
     except Exception as e:
-        logger.error(f"Error in data preprocessing: {e}")
+        logger.error(f"Error in data cleaning: {e}")
         raise
 
 ### Function to split data into train and test sets
@@ -81,8 +81,8 @@ def main():
 
         # Load data
         data = load_data(data_path)
-        # Preprocess data
-        final_data = preprocess_data(data)
+        # Cleaning the data
+        final_data = cleaning_data(data)
         # Split data into train and test sets
         train_data, test_data = train_test_split(final_data, test_size=test_size, random_state=random_state)
         # Save the train and test data
