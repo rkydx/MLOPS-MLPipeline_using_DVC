@@ -42,13 +42,14 @@ def load_data(data_url: str) -> pd.DataFrame:
 
 ### Function to preprocess data, specific to the dataset being used
 def preprocess_data(data: pd.DataFrame) -> pd.DataFrame:
-    """Preprocess the data (example: handle missing values, drop columns, rename columns etc.)."""
+    """Preprocess the data (example: handle missing values, drop columns, rename columns, remove duplicates etc.)."""
     try:
         logger.info("Starting data preprocessing")
         data.drop(columns = ['Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4'], inplace = True) # Drop unnecessary columns
         data.rename(columns = {'v1': 'target', 'v2': 'text'}, inplace = True)           # Rename columns for better understanding
         # data = data.dropna()                                                          # Drop rows with missing values
         # logger.info(f"Data after dropping missing values has shape {data.shape}")
+        data.drop_duplicates(keep='first', inplace = True)                                # Drop duplicate rows
         logger.info("Data preprocessing completed")
         return data
     except KeyError as e:
