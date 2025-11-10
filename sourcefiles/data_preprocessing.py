@@ -36,6 +36,9 @@ logger.addHandler(file_handler)
 def transform_text(text):
     """
     Transform the input text by converting to lowercase, tokenizing, removing stopwords and punctuation, and stemming.
+
+    :param text: Input text string
+    :return: Transformed text string
     """
     try:
         # logger.info("Starting text transformation")              # Commented to reduce log clutter for each text transformation
@@ -64,6 +67,11 @@ def transform_text(text):
 def preprocess_data(data, text_column='text', target_column='target'):
     """
     Preprocess the data by transforming text column and encoding target column.
+
+    :param data: DataFrame containing the raw data
+    :param text_column: Name of the text column to be transformed
+    :param target_column: Name of the target column to be encoded
+    :return: DataFrame containing the preprocessed data
     """
     try:
         logger.info("Starting data preprocessing")
@@ -89,6 +97,10 @@ def preprocess_data(data, text_column='text', target_column='target'):
 def main(text_column='text', target_column='target'):
     """
     Main function to load raw data, preprocess it, and save the processed data.
+
+    :param text_column: Name of the text column to be transformed
+    :param target_column: Name of the target column to be encoded
+    :return: None
     """
     try:
         # Fetch the data from data/raw
