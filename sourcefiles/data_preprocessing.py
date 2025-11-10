@@ -67,7 +67,7 @@ def preprocess_data(data, text_column='text', target_column='target'):
     """
     try:
         logger.info("Starting data preprocessing")
-        
+
         # Transforming the specified text column
         data[text_column] = data[text_column].apply(transform_text)
         logger.info("Text column transformation applied")
@@ -101,8 +101,8 @@ def main(text_column='text', target_column='target'):
         test_processed_data = preprocess_data(test_data, text_column, target_column)
         logger.info("Data preprocessing completed successfully.")
 
-        # Save the processed data to data/processed
-        data_path = os.path.join('./data', 'processed')
+        # Save the processed data to data/interim
+        data_path = os.path.join('./data', 'interim')
         os.makedirs(data_path, exist_ok=True)
         train_processed_data.to_csv(os.path.join(data_path, 'train_processed.csv'), index=False)
         test_processed_data.to_csv(os.path.join(data_path, 'test_processed.csv'), index=False)
