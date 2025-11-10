@@ -27,7 +27,11 @@ logger.addHandler(file_handler)
 
 ### Function to load data, data can be from local or remote location
 def load_data(data_url: str) -> pd.DataFrame:
-    """Load data from a CSV file into a pandas DataFrame."""
+    """Load data from a CSV file into a pandas DataFrame.
+    
+    :param data_url: URL or local path to the CSV file
+    :return: DataFrame containing the loaded data
+    """
     try:
         logger.info(f"Loading data from {data_url}")
         data = pd.read_csv(data_url)
@@ -42,7 +46,11 @@ def load_data(data_url: str) -> pd.DataFrame:
 
 ### Function to preprocess data, specific to the dataset being used
 def cleaning_data(data: pd.DataFrame) -> pd.DataFrame:
-    """Cleaning the data (example: handle missing values, drop columns, rename columns, remove duplicates etc.)."""
+    """Cleaning the data (example: handle missing values, drop columns, rename columns, remove duplicates etc.).
+    
+    :param data: DataFrame containing the raw data
+    :return: DataFrame containing the cleaned data
+    """
     try:
         logger.info("Starting data cleaning process")
         data.drop(columns = ['Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4'], inplace = True) # Drop unnecessary columns
@@ -61,7 +69,13 @@ def cleaning_data(data: pd.DataFrame) -> pd.DataFrame:
 
 ### Function to split data into train and test sets
 def save_data(train_data: pd.DataFrame, test_data: pd.DataFrame, data_path: str) -> None:
-    """Save the train and test data to specified paths."""
+    """Save the train and test data to specified paths.
+    
+    :param train_data: DataFrame containing the training data
+    :param test_data: DataFrame containing the testing data
+    :param data_path: Path to save the train and test data
+    :return: None
+    """
     try:
         raw_data_path = os.path.join(data_path, 'raw')
         os.makedirs(raw_data_path, exist_ok=True)
