@@ -25,6 +25,28 @@ file_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
+### Function to load configuration/parameters from a YAML file
+def load_config(config_path: str) -> dict:
+    """Load configuration from a YAML file.
+    
+    :param config_path: Path to the YAML configuraton file
+    :return: Dictionary containing the configuration parameters
+    """
+    try:
+        with open(config_path, 'r') as file:
+            config = yaml.safe_load(file)
+        logger.info(f'Configuration parameters loaded from {config_path}')
+        return config
+    except FileNotFoundError as e:
+        logger.error(f"Configuration file not found: {e}")
+        raise
+    except yaml.YAMLErrora as e:
+        logger.error(f"Error parsing configuration file: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"Error loading configuration: {e}")
+        raise
+
 def load_data(file_path: str) -> pd.DataFrame:
     """Load data from a CSV file into a pandas DataFrame.
     
@@ -96,7 +118,9 @@ def save_vectorized_data(data: pd.DataFrame, file_path: str) -> None:
 def main():
     """Main function to execute the feature engineering process."""
     try:
-        max_features = 50
+        params = load_config(config_path="params.yaml")
+        max_features = params['feature_engineering']['max_features']
+        #max_features = 50
 
         # Load the preprocessed data
         train_data = load_data('./data/interim/train_processed.csv')

@@ -27,6 +27,28 @@ file_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
+### Function to load configuration/parameters from a YAML file
+def load_config(config_path: str) -> dict:
+    """Load configuration from a YAML file.
+    
+    :param config_path: Path to the YAML configuraton file
+    :return: Dictionary containing the configuration parameters
+    """
+    try:
+        with open(config_path, 'r') as file:
+            config = yaml.safe_load(file)
+        logger.info(f'Configuration parameters loaded from {config_path}')
+        return config
+    except FileNotFoundError as e:
+        logger.error(f"Configuration file not found: {e}")
+        raise
+    except yaml.YAMLErrora as e:
+        logger.error(f"Error parsing configuration file: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"Error loading configuration: {e}")
+        raise
+
 def load_data(file_path: str) -> pd.DataFrame:
     """Load data from a CSV file into a pandas DataFrame.
     
@@ -100,10 +122,12 @@ def save_model(model: RandomForestClassifier, model_path: str) -> None:
 def main():
     """Main function to execute the model building process."""
     try:
-        params = {
-            'n_estimators': 25,
-            'random_state': 2
-        }
+        params = load_config(config_path="params.yaml")['model_building']
+        # Define the model parameters
+        # params = {
+        #     'n_estimators': 25,
+        #     'random_state': 2
+        # }
         # Load the vectorized training data
         train_data = load_data('./data/processed/train_tfidf.csv')
         X_train = train_data.drop(columns=['label']).values  # All columns except the last one, here 'label' is the last column
