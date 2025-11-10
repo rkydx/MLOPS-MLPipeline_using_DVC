@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import pickle
 import json
 import yaml
+from dvclive import Live
 
 # Ensure the 'logs' directory exists
 log_dir = 'logs'
@@ -27,6 +28,28 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
+
+### Function to load configuration/parameters from a YAML file
+def load_config(config_path: str) -> dict:
+    """Load configuration from a YAML file.
+    
+    :param config_path: Path to the YAML configuraton file
+    :return: Dictionary containing the configuration parameters
+    """
+    try:
+        with open(config_path, 'r') as file:
+            config = yaml.safe_load(file)
+        logger.info(f'Configuration parameters loaded from {config_path}')
+        return config
+    except FileNotFoundError as e:
+        logger.error(f"Configuration file not found: {e}")
+        raise
+    except yaml.YAMLErrora as e:
+        logger.error(f"Error parsing configuration file: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"Error loading configuration: {e}")
+        raise
 
 def load_model(model_path: str):
     """Load the trained model from a file.
@@ -127,6 +150,8 @@ def main():
     Main function to execute the model evaluation process.
     """
     try:
+        # Load parameters
+        params = load_config(config_path="params.yaml")
         # Load the trained model
         model = load_model('./models/random_forest_model.pkl')
 
@@ -140,6 +165,14 @@ def main():
 
         # Evaluate the model
         metrics = evaluate_model(model, X_test, y_test)
+
+        # Experiment tracking using dvclive
+        with Live(save_dvc_exp=True) as live:
+            live.log_metric('accuracy', accuracy_score(y_test, y_test))
+            live.log_metric('precision', precision_score(y_test, y_test))
+            live.log_metric('recall', recall_score(y_test, y_test))
+
+            live.log_params(params)
 
         # Save the evaluation report
         save_evaluation_report(metrics, './reports/metrics_evaluation_report.json')
