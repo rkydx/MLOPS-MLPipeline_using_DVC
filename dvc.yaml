@@ -40,10 +40,11 @@ stages:
     - sourcefiles/model_evaluation.py
     metrics:
     - reports/metrics_evaluation_report.json
-# params:
-# - dvclive/params.yaml
-# metrics:
-# - dvclive/metrics.json
-# plots:
-# - dvclive/plots/metrics:
-#     x: step
+# Below section will automatically get added by DVCLive
+params:
+- dvclive/params.yaml
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step
