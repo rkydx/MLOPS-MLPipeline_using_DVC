@@ -68,4 +68,35 @@ def apply_tfidf_vectorization(train_data: pd.DataFrame, test_data: pd.DataFrame,
         logger.error(f"Error during TF-IDF vectorization: {e}")
         raise    
 
+def save_vectorized_data(data: pd.DataFrame, file_path: str) -> None:
+    """Save the vectorized data to a CSV file."""
+    try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        data.to_csv(file_path, index=False)
+        logger.info(f"Vectorized data saved successfully to {file_path}")
+    except Exception as e:
+        logger.error(f"Error saving vectorized data: {e}")
+        raise
+
+def main():
+    """Main function to execute the feature engineering process."""
+    try:
+        max_features = 50
+
+        # Load the preprocessed data
+        train_data = load_data('./data/interim/train_processed.csv')
+        test_data = load_data('./data/interim/test_processed.csv')
+
+        # Apply TF-IDF vectorization
+        train_vectorized, test_vectorized = apply_tfidf_vectorization(train_data, test_data, max_features)
+
+        # Save the vectorized data
+        save_vectorized_data(train_vectorized, os.path.join("./data", "processed", "train_tfidf.csv"))
+        save_vectorized_data(test_vectorized, os.path.join("./data", "processed", "test_tfidf.csv"))
+    except Exception as e:
+        logger.error(f"Error in feature engineering process: {e}")
+        raise
+
+if __name__ == '__main__':
+    main()    
     
