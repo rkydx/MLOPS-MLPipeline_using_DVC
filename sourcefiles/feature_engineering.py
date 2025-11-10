@@ -26,7 +26,11 @@ logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
 def load_data(file_path: str) -> pd.DataFrame:
-    """Load data from a CSV file into a pandas DataFrame."""
+    """Load data from a CSV file into a pandas DataFrame.
+    
+    :param file_path: Path to the CSV file
+    :return: DataFrame containing the loaded data
+    """
     try:
         logger.info(f"Loading data from {file_path}")
         data = pd.read_csv(file_path)
@@ -41,7 +45,13 @@ def load_data(file_path: str) -> pd.DataFrame:
         raise
 
 def apply_tfidf_vectorization(train_data: pd.DataFrame, test_data: pd.DataFrame, max_features: int) -> tuple:
-    """Apply TF-IDF vectorization to the data."""
+    """Apply TF-IDF vectorization to the data.
+    
+    :param train_data: DataFrame containing the training data
+    :param test_data: DataFrame containing the testing data
+    :param max_features: Maximum number of features for TF-IDF
+    :return: Tuple of DataFrames containing the vectorized training and testing data
+    """
     try:
         logger.info("Starting TF-IDF vectorization")
         vectorizer = TfidfVectorizer(max_features=max_features)
@@ -69,7 +79,12 @@ def apply_tfidf_vectorization(train_data: pd.DataFrame, test_data: pd.DataFrame,
         raise    
 
 def save_vectorized_data(data: pd.DataFrame, file_path: str) -> None:
-    """Save the vectorized data to a CSV file."""
+    """Save the vectorized data to a CSV file.
+    
+    :param data: DataFrame containing the vectorized data
+    :param file_path: Path to save the CSV file
+    :return: None
+    """
     try:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         data.to_csv(file_path, index=False)
