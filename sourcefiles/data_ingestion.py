@@ -50,7 +50,7 @@ def cleaning_data(data: pd.DataFrame) -> pd.DataFrame:
         # data = data.dropna()                                                          # Drop rows with missing values
         # logger.info(f"Data after dropping missing values has shape {data.shape}")
         data.drop_duplicates(keep='first', inplace = True)                                # Drop duplicate rows
-        logger.info("Data cleaning process completed")
+        logger.info("Data cleaning process completed - dropped unnecessary columns and duplicates and renamed columns")
         return data
     except KeyError as e:
         logger.error(f"Key error during data cleaning: {e}")
