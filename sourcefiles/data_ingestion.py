@@ -112,7 +112,9 @@ def save_data(train_data: pd.DataFrame, test_data: pd.DataFrame, data_path: str)
 ### Main function to execute the data ingestion pipeline
 def main():
     try:
-        test_size = 0.2
+        params = load_config(config_path="params.yaml")
+        test_size = params['data_ingestion']['test_size']
+        #test_size = 0.2
         random_state = 2                # Random state 2 means every time you run the code, you will get the same split of data into train and test sets
         data_path = "https://raw.githubusercontent.com/rkydx/datasets_repo/refs/heads/main/spam.csv"
 
