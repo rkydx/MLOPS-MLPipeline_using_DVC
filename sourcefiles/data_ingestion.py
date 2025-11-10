@@ -25,6 +25,29 @@ file_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
+
+### Function to load configuration/parameters from a YAML file
+def load_config(config_path: str) -> dict:
+    """Load configuration from a YAML file.
+    
+    :param config_path: Path to the YAML configuraton file
+    :return: Dictionary containing the configuration parameters
+    """
+    try:
+        with open(config_path, 'r') as file:
+            config = yaml.safe_load(file)
+        logger.info(f'Configuration parameters loaded from {config_path}')
+        return config
+    except FileNotFoundError as e:
+        logger.error(f"Configuration file not found: {e}")
+        raise
+    except yaml.YAMLErrora as e:
+        logger.error(f"Error parsing configuration file: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"Error loading configuration: {e}")
+        raise
+
 ### Function to load data, data can be from local or remote location
 def load_data(data_url: str) -> pd.DataFrame:
     """Load data from a CSV file into a pandas DataFrame.
