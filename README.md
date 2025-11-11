@@ -35,4 +35,4 @@ dvc exp show                 # Compare experiments
 dvc push                     # Push data/model to S3
 ```
 ## Architecture
-![DVC MLOps Architecture](assets/dvc_architecture.png)
+![DVC MLOps Architecture](assets/dvc_architecture_detailed.png)
